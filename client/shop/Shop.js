@@ -6,6 +6,8 @@ import Typography from "@material-ui/core/Typography";
 import Avatar from "@material-ui/core/Avatar";
 import Grid from "@material-ui/core/Grid";
 import { read } from "./api-shop.js";
+import Products from "./../product/Products";
+import { listByShop } from "./../product/api-product.js";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,11 +45,25 @@ const useStyles = makeStyles((theme) => ({
 export default function Shop({ match }) {
   const classes = useStyles();
   const [shop, setShop] = useState("");
+  const [products, setProducts] = useState("");
   const [error, setError] = useState("");
 
   useEffect(() => {
     const abortController = new AbortController();
     const signal = abortController.signal;
+
+    listByShop(
+      {
+        shopId: match.params.shopId,
+      },
+      signal
+    ).then((data) => {
+      if (data.error) {
+        setError(data.error);
+      } else {
+        setProducts(data);
+      }
+    });
 
     read(
       {
@@ -67,30 +83,70 @@ export default function Shop({ match }) {
     };
   }, [match.params.shopId]);
 
+  useEffect(() => {
+    const abortController = new AbortController();
+    const signal = abortController.signal;
+
+    listByShop(
+      {
+        shopId: match.params.shopId,
+      },
+      signal
+    ).then((data) => {
+      if (data.error) {
+        setError(data.error);
+      } else {
+        setProducts(data);
+      }
+    });
+
+    return function cleanup() {
+      abortController.abort();
+    };
+  }, [match.params.shopId]);
+
   const logoUrl = shop._id
     ? `/api/shops/logo/${shop._id}?${new Date().getTime()}`
     : "/api/shops/defaultphoto";
 
   return (
     <div className={classes.root}>
-      <Card className={classes.card}>
-        <CardContent>
-          <Typography type="headline" component="h2" className={classes.title}>
-            {shop.name}
-          </Typography>
-          <br />
-          <Avatar src={logoUrl} className={classes.bigAvatar} />
-          <br />
+      <Grid container spacing={8}>
+        <Grid item xs={4} sm={4}>
+          <Card className={classes.card}>
+            <CardContent>
+              <Typography
+                type="headline"
+                component="h2"
+                className={classes.title}
+              >
+                {shop.name}
+              </Typography>
+              <br />
+              <Avatar src={logoUrl} className={classes.bigAvatar} />
+              <br />
+              <Typography
+                type="subheading"
+                component="h2"
+                className={classes.subheading}
+              >
+                {shop.description}
+              </Typography>
+              <br />
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={8} sm={8}>
           <Typography
-            type="subheading"
+            type="title"
             component="h2"
-            className={classes.subheading}
+            className={classes.productTitle}
           >
-            {shop.description}
+            Products
           </Typography>
-          <br />
-        </CardContent>
-      </Card>
+          <Products products={products} searched={false} />
+        </Grid>
+      </Grid>
     </div>
   );
 }

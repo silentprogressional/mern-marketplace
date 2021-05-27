@@ -61,7 +61,6 @@ export default function MyShops() {
         console.log(data.error);
       } else {
         setShops(data);
-        console.log(data);
       }
     });
     return function cleanup() {

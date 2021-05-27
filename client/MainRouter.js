@@ -13,6 +13,11 @@ import Shops from "./shop/Shops";
 import MyShops from "./shop/MyShops";
 import Shop from "./shop/Shop";
 import EditShop from "./shop/EditShop";
+import NewProduct from "./product/NewProduct";
+import Product from "./product/Product";
+import EditProduct from "./product/EditProduct";
+import Cart from "./cart/cart";
+import StripeConnect from "./user/StripeConnect";
 
 const MainRouter = () => {
   return (
@@ -28,9 +33,22 @@ const MainRouter = () => {
         <Route path="/shops/all" component={Shops} />
         <Route path="/shops/:shopId" component={Shop} />
 
+        <Route path="/product/:productId" component={Product} />
+        <Route path="/cart" component={Cart} />
+
         <PrivateRoute path="/seller/shops" component={MyShops} />
         <PrivateRoute path="/seller/shop/new" component={NewShop} />
         <PrivateRoute path="/seller/shop/edit/:shopId" component={EditShop} />
+        <PrivateRoute
+          path="/seller/:shopId/products/new"
+          component={NewProduct}
+        />
+        <PrivateRoute
+          path="/seller/:shopId/:productId/edit"
+          component={EditProduct}
+        />
+
+        <Route path="/seller/stripe/connect" component={StripeConnect} />
       </Switch>
     </div>
   );

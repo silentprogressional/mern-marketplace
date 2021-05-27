@@ -13,6 +13,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { read, update } from "./api-shop.js";
 import { Redirect } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
+import MyProducts from "./../product/MyProducts";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -131,72 +132,83 @@ export default function EditShop({ match }) {
   }
   return (
     <div>
-      <Card className={classes.card}>
-        <CardContent>
-          <Typography type="headline" component="h2" className={classes.title}>
-            Edit Shop
-          </Typography>
-          <br />
-          <Avatar src={logoUrl} className={classes.bigAvatar} />
-          <br />
+      <Grid container spacing={8}>
+        <Grid item xs={6} sm={6}>
+          <Card className={classes.card}>
+            <CardContent>
+              <Typography
+                type="headline"
+                component="h2"
+                className={classes.title}
+              >
+                Edit Shop
+              </Typography>
+              <br />
+              <Avatar src={logoUrl} className={classes.bigAvatar} />
+              <br />
 
-          <input
-            accept="image/*"
-            onChange={handleChange("image")}
-            className={classes.input}
-            id="icon-button-file"
-            type="file"
-          />
-          <label htmlFor="icon-button-file">
-            <Button variant="contained" color="secondary" component="span">
-              Change Logo
-              <FileUpload />
-            </Button>
-          </label>
-          <span className={classes.filename}>
-            {values.image ? values.image.name : ""}
-          </span>
-          <br />
-          <TextField
-            id="name"
-            label="Name"
-            className={classes.textField}
-            value={values.name}
-            onChange={handleChange("name")}
-            margin="normal"
-          />
-          <br />
-          <TextField
-            id="multiline-flexible"
-            label="Description"
-            multiline
-            rows="2"
-            value={values.description}
-            onChange={handleChange("description")}
-            className={classes.textField}
-            margin="normal"
-          />
-          <br />
-          {values.error && (
-            <Typography component="p" color="error">
-              <Icon color="error" className={classes.error}>
-                error
-              </Icon>
-              {values.error}
-            </Typography>
-          )}
-        </CardContent>
-        <CardActions>
-          <Button
-            color="primary"
-            variant="contained"
-            onClick={clickSubmit}
-            className={classes.submit}
-          >
-            Submit
-          </Button>
-        </CardActions>
-      </Card>
+              <input
+                accept="image/*"
+                onChange={handleChange("image")}
+                className={classes.input}
+                id="icon-button-file"
+                type="file"
+              />
+              <label htmlFor="icon-button-file">
+                <Button variant="contained" color="secondary" component="span">
+                  Change Logo
+                  <FileUpload />
+                </Button>
+              </label>
+              <span className={classes.filename}>
+                {values.image ? values.image.name : ""}
+              </span>
+              <br />
+              <TextField
+                id="name"
+                label="Name"
+                className={classes.textField}
+                value={values.name}
+                onChange={handleChange("name")}
+                margin="normal"
+              />
+              <br />
+              <TextField
+                id="multiline-flexible"
+                label="Description"
+                multiline
+                rows="2"
+                value={values.description}
+                onChange={handleChange("description")}
+                className={classes.textField}
+                margin="normal"
+              />
+              <br />
+              {values.error && (
+                <Typography component="p" color="error">
+                  <Icon color="error" className={classes.error}>
+                    error
+                  </Icon>
+                  {values.error}
+                </Typography>
+              )}
+            </CardContent>
+            <CardActions>
+              <Button
+                color="primary"
+                variant="contained"
+                onClick={clickSubmit}
+                className={classes.submit}
+              >
+                Submit
+              </Button>
+            </CardActions>
+          </Card>
+        </Grid>
+        <Grid item xs={6} sm={6}>
+          <MyProducts shopId={match.params.shopId} />
+        </Grid>
+      </Grid>
     </div>
   );
 }

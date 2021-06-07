@@ -19,6 +19,7 @@ import { Redirect, Link } from "react-router-dom";
 import config from "./../../config/config";
 import stripeButton from "./../assets/images/stripeButton.png";
 import { Button } from "@material-ui/core";
+import MyOrders from "./../order/MyOrders";
 
 const useStyles = makeStyles((theme) => ({
   root: theme.mixins.gutters({
@@ -125,6 +126,7 @@ export default function Profile({ match }) {
           />
         </ListItem>
       </List>
+      <MyOrders />
     </Paper>
   );
 }

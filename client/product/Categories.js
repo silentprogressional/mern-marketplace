@@ -28,14 +28,14 @@ const useStyles = makeStyles((theme) => ({
     lineHeight: 2.5,
     textAlign: "center",
     fontSize: "1.35em",
-    margin: "0 4px 0 0",
+    margin: "5px 5px 5px 5px",
   },
   card: {
     margin: "auto",
     marginTop: 20,
   },
   title: {
-    padding: `${theme.spacing(3)}px ${theme.spacing(2.5)}px ${theme.spacing(
+    padding: `${theme.spacing(2)}px ${theme.spacing(2.5)}px ${theme.spacing(
       2
     )}px`,
     color: theme.palette.openTitle,
@@ -44,12 +44,11 @@ const useStyles = makeStyles((theme) => ({
   },
   icon: {
     verticalAlign: "sub",
-    color: "#738272",
-    fontSize: "0.9em",
+    color: "inherits",
+    fontSize: "0.6em",
   },
   link: {
-    color: "#4d6538",
-    textShadow: "0px 2px 12px #ffffff",
+    color: "#f9f4f4",
     cursor: "pointer",
   },
 }));
@@ -97,17 +96,15 @@ export default function Categories(props) {
           Explore products by category
         </Typography>
         <div className={classes.root}>
-          <GridList className={classes.gridList} cols={4}>
+          <GridList className={classes.gridList} cols={8}>
             {props.categories.map((tile, i) => (
               <GridListTile
                 key={i}
                 className={classes.tileTitle}
                 style={{
                   height: "64px",
-                  backgroundColor:
-                    selected == tile
-                      ? "rgba(95, 139, 137, 0.56)"
-                      : "rgba(95, 124, 139, 0.32)",
+                  borderRadius: 30,
+                  backgroundColor: selected == tile ? "#817282" : "#a0738a",
                 }}
               >
                 <span className={classes.link} onClick={listbyCategory(tile)}>

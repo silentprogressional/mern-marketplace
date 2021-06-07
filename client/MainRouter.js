@@ -18,6 +18,9 @@ import Product from "./product/Product";
 import EditProduct from "./product/EditProduct";
 import Cart from "./cart/cart";
 import StripeConnect from "./user/StripeConnect";
+import ShopOrders from "./order/ShopOrders";
+import Order from "./order/Order";
+import NewAuction from "./auction/NewAuction";
 
 const MainRouter = () => {
   return (
@@ -30,11 +33,17 @@ const MainRouter = () => {
         <Route path="/signin" component={Signin} />
         <PrivateRoute path="/user/edit/:userId" component={EditProfile} />
         <Route path="/user/:userId" component={Profile} />
-        <Route path="/shops/all" component={Shops} />
-        <Route path="/shops/:shopId" component={Shop} />
 
         <Route path="/product/:productId" component={Product} />
         <Route path="/cart" component={Cart} />
+        <Route path="/shops/all" component={Shops} />
+        <Route path="/shops/:shopId" component={Shop} />
+
+        <Route path="/order/:orderId" component={Order} />
+        <PrivateRoute
+          path="/seller/orders/:shop/:shopId"
+          component={ShopOrders}
+        />
 
         <PrivateRoute path="/seller/shops" component={MyShops} />
         <PrivateRoute path="/seller/shop/new" component={NewShop} />
@@ -49,6 +58,7 @@ const MainRouter = () => {
         />
 
         <Route path="/seller/stripe/connect" component={StripeConnect} />
+        <PrivateRoute path="/auction/new" component={NewAuction} />
       </Switch>
     </div>
   );

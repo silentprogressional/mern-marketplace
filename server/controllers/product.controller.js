@@ -200,6 +200,21 @@ const decreaseQuantity = async (req, res, next) => {
   }
 };
 
+const increaseQuantity = async (req, res, next) => {
+  try {
+    await Product.findByIdAndUpdate(
+      req.product._id,
+      { $inc: { quntity: req.body.quantity } },
+      { new: true }
+    ).exec();
+    next();
+  } catch (err) {
+    return res.status(400).json({
+      error: errorHandler.getErrorMessage(err),
+    });
+  }
+};
+
 export default {
   create,
   listByShop,
@@ -214,4 +229,5 @@ export default {
   remove,
   list,
   decreaseQuantity,
+  increaseQuantity,
 };

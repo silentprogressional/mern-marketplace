@@ -50,7 +50,6 @@ const PlaceOrder = (props) => {
   const placeOrder = () => {
     props.stripe.createToken().then((payload) => {
       if (payload.error) {
-        console.log("payload error");
         setValues({ ...values, error: payload.error.message });
       } else {
         const jwt = auth.isAuthenticated();

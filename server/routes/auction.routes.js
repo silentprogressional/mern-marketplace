@@ -9,6 +9,13 @@ router.route("/api/auctions").get(auctionCtrl.listOpen);
 
 router.route("/api/auctions/bid/:userId").get(auctionCtrl.listByBidder);
 
+router.route("/api/auction/:auctionId").get(auctionCtrl.read);
+
+router
+  .route("/api/auctions/:auctionId")
+  .put(authCtrl.requireSignin, auctionCtrl.isSeller, auctionCtrl.update)
+  .delete(authCtrl.requireSignin, auctionCtrl.isSeller, auctionCtrl.remove);
+
 router
   .route("/api/auctions/by/:userId")
   .get(

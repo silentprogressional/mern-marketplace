@@ -68,7 +68,54 @@ export default function Auctions(props) {
     );
   };
 
-  return <List dense></List>;
+  return (
+    <List dense>
+      {props.auctions.map((auction, i) => {
+        return (
+          <span key={i}>
+            <ListItem button>
+              <ListItemAvatar>
+                <Avatar
+                  variant="square"
+                  src={
+                    "/api/auctions/image/" +
+                    auction._id +
+                    "?" +
+                    new Date().getTime()
+                  }
+                />
+              </ListItemAvatar>
+              <ListItemText
+                primary={auction.itemName}
+                secondary={auctionState(auction)}
+              />
+              <ListItemSecondaryAction>
+                <Link to={"/auction/" + auction._id}>
+                  <IconButton aria-label="View" color="primary">
+                    <ViewIcon />
+                  </IconButton>
+                </Link>
+                {auth.isAuthenticated().user &&
+                  auth.isAuthenticated().user._id == auction.seller._id && (
+                    <>
+                      <Link to={"/auction/edit/" + auction._id}>
+                        <IconButton aria-label="Edit" color="primary">
+                          <Edit />
+                        </IconButton>
+                      </Link>
+                      <DeleteAuction
+                        auction={auction}
+                        onRemove={props.removeAuction}
+                      />
+                    </>
+                  )}
+              </ListItemSecondaryAction>
+            </ListItem>
+          </span>
+        );
+      })}
+    </List>
+  );
 }
 
 Auctions.propTypes = {

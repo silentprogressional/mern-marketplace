@@ -12,21 +12,18 @@ import Badge from "@material-ui/core/Badge";
 import cart from "./../cart/cart-helper";
 
 const isActive = (history, path) => {
-  if (history.location.pathname == path) return { color: "#ff4081" };
+  if (history.location.pathname == path) return { color: "#bef67a" };
   else return { color: "#ffffff" };
 };
-
 const isPartActive = (history, path) => {
   if (history.location.pathname.includes(path)) return { color: "#bef67a" };
   else return { color: "#ffffff" };
 };
-
-console.log(cart.itemTotal(), "here's your fucking cart");
 const Menu = withRouter(({ history }) => (
   <AppBar position="static">
     <Toolbar>
       <Typography variant="h6" color="inherit">
-        Cannabis Marketplace 🔥💨
+        Cannabis Marketplace 💨🛒
       </Typography>
       <div>
         <Link to="/">
@@ -37,12 +34,17 @@ const Menu = withRouter(({ history }) => (
         <Link to="/shops/all">
           <Button style={isActive(history, "/shops/all")}>All Shops</Button>
         </Link>
+        <Link to="/auctions/all">
+          <Button style={isActive(history, "/auctions/all")}>
+            All Auctions
+          </Button>
+        </Link>
         <Link to="/cart">
           <Button style={isActive(history, "/cart")}>
             Cart
             <Badge
+              invisible={false}
               color="secondary"
-              invisible={cart.itemTotal() > 0 ? false : true}
               badgeContent={cart.itemTotal()}
               style={{ marginLeft: "7px" }}
             >
@@ -53,9 +55,6 @@ const Menu = withRouter(({ history }) => (
       </div>
       <div style={{ position: "absolute", right: "10px" }}>
         <span style={{ float: "right" }}>
-          <Link to="/users">
-            <Button style={isActive(history, "/users")}>Users</Button>
-          </Link>
           {!auth.isAuthenticated() && (
             <span>
               <Link to="/signup">
@@ -69,11 +68,18 @@ const Menu = withRouter(({ history }) => (
           {auth.isAuthenticated() && (
             <span>
               {auth.isAuthenticated().user.seller && (
-                <Link to="/seller/shops">
-                  <Button style={isPartActive(history, "/seller/")}>
-                    My Shops
-                  </Button>
-                </Link>
+                <>
+                  <Link to="/seller/shops">
+                    <Button style={isPartActive(history, "/seller/")}>
+                      My Shops
+                    </Button>
+                  </Link>
+                  <Link to="/myauctions">
+                    <Button style={isPartActive(history, "/myauctions")}>
+                      My Auctions
+                    </Button>
+                  </Link>
+                </>
               )}
               <Link to={"/user/" + auth.isAuthenticated().user._id}>
                 <Button

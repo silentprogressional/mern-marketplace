@@ -20,6 +20,8 @@ import config from "./../../config/config";
 import stripeButton from "./../assets/images/stripeButton.png";
 import { Button } from "@material-ui/core";
 import MyOrders from "./../order/MyOrders";
+import Auctions from "./../auction/Auctions";
+import { listByBidder } from "../auction/api-auction";
 
 const useStyles = makeStyles((theme) => ({
   root: theme.mixins.gutters({
@@ -39,6 +41,12 @@ const useStyles = makeStyles((theme) => ({
     verticalAlign: "super",
     marginRight: "10px",
   },
+  auctions: {
+    maxWidth: 600,
+    margin: "24px",
+    padding: theme.spacing(3),
+    backgroundColor: "#3f3f3f0d",
+  },
 }));
 
 export default function Profile({ match }) {
@@ -46,6 +54,36 @@ export default function Profile({ match }) {
   const [user, setUser] = useState({});
   const [redirectToSignin, setRedirectToSignin] = useState(false);
   const jwt = auth.isAuthenticated();
+
+  const [auctions, setAuctions] = useState([]);
+
+  useEffect(() => {
+    const abortController = new AbortController();
+    const signal = abortController.signal;
+    listByBidder(
+      {
+        userId: match.params.userId,
+      },
+      { t: jwt.token },
+      signal
+    ).then((data) => {
+      if (data.error) {
+        setRedirectToSignin(true);
+      } else {
+        setAuctions(data);
+      }
+    });
+    return function cleanup() {
+      abortController.abort();
+    };
+  }, []);
+
+  const removeAuction = (auction) => {
+    const updatedAuctions = [...auctions];
+    const index = updatedAuctions.indexOf(auction);
+    updatedAuctions.splice(index, 1);
+    setAuctions(updatedAuctions);
+  };
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -127,6 +165,12 @@ export default function Profile({ match }) {
         </ListItem>
       </List>
       <MyOrders />
+      <Paper className={classes.auctions} elevation={4}>
+        <Typography type="title" color="primary">
+          Auctions you bid in
+        </Typography>
+        <Auctions auctions={auctions} removeAuctions={removeAuction} />
+      </Paper>
     </Paper>
   );
 }

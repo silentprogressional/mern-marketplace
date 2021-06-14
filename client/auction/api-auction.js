@@ -14,6 +14,18 @@ const create = async (params, credentials, auction) => {
   }
 };
 
+const read = async (params, signal) => {
+  try {
+    let response = await fetch("/api/auction/" + params.auctionId, {
+      method: "GET",
+      signal: signal,
+    });
+    return response.json();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const listOpen = async (signal) => {
   try {
     let response = await fetch("/api/auctions", {
@@ -58,4 +70,36 @@ const listBySeller = async (params, credentials, signal) => {
   }
 };
 
-export { create, listOpen, listByBidder, listBySeller };
+const update = async (params, credentials, auction) => {
+  try {
+    let response = await fetch("/api/auctions/" + params.auctionId, {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        Authorization: "Bearer " + credentials.t,
+      },
+      body: auction,
+    });
+    return response.json();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const remove = async (params, credentials) => {
+  try {
+    let response = await fetch("/api/auctions/" + params.auctionId, {
+      method: "DELETE",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + credentials.t,
+      },
+    });
+    return response.json();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export { create, read, listOpen, listByBidder, listBySeller, update, remove };
